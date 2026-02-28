@@ -1,6 +1,15 @@
 from datetime import datetime
 
-from sqlalchemy import BigInteger, Boolean, DateTime, ForeignKey, SmallInteger, String, Text, func
+from sqlalchemy import (
+    BigInteger,
+    Boolean,
+    DateTime,
+    ForeignKey,
+    SmallInteger,
+    String,
+    Text,
+    func,
+)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -25,6 +34,9 @@ class Item(Base):
     text: Mapped[str] = mapped_column(Text, nullable=False)
     text_hash: Mapped[str] = mapped_column(String(32), unique=True, nullable=False)
     status: Mapped[str] = mapped_column(String(16), default="pending", index=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), index=True
+    )
 
     labels: Mapped[list["Label"]] = relationship(back_populates="item")
 
@@ -33,10 +45,14 @@ class Label(Base):
     __tablename__ = "labels"
 
     item_id: Mapped[int] = mapped_column(ForeignKey("items.id"), primary_key=True)
-    user_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("users.telegram_id"), primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        BigInteger, ForeignKey("users.telegram_id"), primary_key=True
+    )
     score: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
     action: Mapped[str] = mapped_column(String(16), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
 
     item: Mapped["Item"] = relationship(back_populates="labels")
     user: Mapped["User"] = relationship(back_populates="labels")

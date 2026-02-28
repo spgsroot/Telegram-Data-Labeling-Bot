@@ -10,5 +10,7 @@ RUN uv sync --frozen --no-dev --no-install-project
 COPY alembic.ini ./
 COPY alembic/ alembic/
 COPY bot/ bot/
+COPY entrypoint.sh ./
+RUN chmod +x entrypoint.sh
 
-CMD ["uv", "run", "python", "-m", "bot"]
+CMD ["./entrypoint.sh"]

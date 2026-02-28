@@ -16,7 +16,7 @@ async def get_next_task(session: AsyncSession, user_id: int) -> Item | None:
     stmt = (
         select(Item)
         .where(Item.status == "pending", Item.id.notin_(subq))
-        .order_by(Item.id)
+        .order_by(Item.created_at.desc())
         .limit(1)
         .with_for_update(skip_locked=True)
     )

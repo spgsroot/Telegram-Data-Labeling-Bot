@@ -7,7 +7,6 @@ from aiogram.enums import ParseMode
 
 from bot.config import settings
 from bot.db.session import engine, sessionmaker
-from bot.db.models import Base
 from bot.middlewares.auth import AuthMiddleware
 from bot.handlers import admin, labeling
 from bot.services.cleanup import cleanup_stale_locks
@@ -18,9 +17,6 @@ log = logging.getLogger(__name__)
 
 
 async def on_startup() -> None:
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-
     # Seed admins from config
     if settings.admin_ids:
         from bot.db.models import User
