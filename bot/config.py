@@ -14,6 +14,7 @@ class Settings(BaseSettings):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.soocks5_proxy = os.getenv("SOOCKS5_PROXY", self.soocks5_proxy)
         if not self.database_url:
             user = os.getenv("POSTGRES_USER", "bot")
             password = os.getenv("POSTGRES_PASSWORD", "bot")
