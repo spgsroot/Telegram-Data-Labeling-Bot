@@ -4,6 +4,7 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.client.session.aiohttp import AiohttpSession
 
 from bot.config import settings
 from bot.db.session import engine, sessionmaker
@@ -41,7 +42,8 @@ async def on_shutdown() -> None:
 
 
 async def main() -> None:
-    bot = Bot(token=settings.token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+    session = AiohttpSession(proxy=settings.soocks5_proxy) if settings.soocks5_proxy else None
+    bot = Bot(token=settings.token, default=DefaultBotProperties(parse_mode=ParseMode.HTML), session=session)
     dp = Dispatcher()
 
     dp.update.middleware(AuthMiddleware(sessionmaker))

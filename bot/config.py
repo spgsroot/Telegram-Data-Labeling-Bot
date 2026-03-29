@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     redis_url: str = "redis://redis:6379/0"
     admin_ids: list[int] = []
     lock_ttl_seconds: int = 900  # 15 min
-
+    soocks5_proxy: str | None = None
     model_config = {"env_prefix": "BOT_", "env_file": ".env"}
 
     def __init__(self, **kwargs):
