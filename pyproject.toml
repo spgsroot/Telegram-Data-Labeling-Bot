@@ -10,7 +10,7 @@ dependencies = [
     "alembic>=1.14,<2",
     "redis[hiredis]>=5.0,<6",
     "py7zr>=0.22,<1",
-    "polars>=1.0,<2",
+    "polars[rtcompat]>=1.0,<2",
     "pydantic-settings>=2.0,<3",
 ]
 
